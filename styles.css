@@ -1,3 +1,30 @@
 body{
     background-color: azure;
 }
+
+.content {
+    display: flex;
+    justify-content: center;
+}
+
+.calculator {
+    width: 350px;
+    background-color: #aaa;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 15px;
+    border-style: solid;
+}
+.display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end; 
+    background-color: #eee;
+    height: 90px;
+    padding: 16px;
+    border-radius: 10px;
+    border-style: solid;
+}
