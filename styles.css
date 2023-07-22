@@ -71,3 +71,91 @@ button {
     border: 0;
     font-size: 20px;
 } 
+#clear {
+    background-color: #FFAAAA;
+}
+
+#clear:hover {
+    background-color: rgba(255, 170, 170, 0.7);
+}
+
+#delete {
+    background-color: #AAAAFF;
+}
+
+#delete:hover {
+    background-color: rgba(170, 170, 255, 0.7);
+}
+
+.operation-button {
+    background-color: rgb(241, 161, 13);
+}
+
+.operation-button:hover {
+    background-color: rgba(241, 161, 13, 0.7);
+}
+
+.button-clicked {
+    border: 1px solid yellow;
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    background-color: #aaa;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 32px;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+    z-index: 1;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.open-popup {
+    visibility: visible;
+    top: 50%; 
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup > div {
+    color: black;
+    font-size: 32px;
+}
+
+.popup > button {
+    width: 150px;
+    font-size: 16px;
+    padding: 8px;
+    background-color: #FFAAAA;
+    border-radius: 10px;
+    /* Remove inconsistent bordering */
+    border: 1px solid black;
+}
+
+.popup > button:hover {
+    border-color: #dddddd;
+    border-width: 2px;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.6;
+}
+
+.overlay-active {
+    display: block;
+  }
