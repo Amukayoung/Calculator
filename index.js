@@ -19,3 +19,9 @@ function subtract(num1, num2) {
     result = Math.round(result * 1000) / 1000;
     return result;
 }
+
+function multiply(num1, num2) {
+    result = num1 * num2;
+    result = Math.round(result * 1000) / 1000;
+    return result;
+}
