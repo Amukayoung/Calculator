@@ -1,264 +1,221 @@
-let num1 = null;
-let num2 = null;
-let operator = null;
-let click = false;
-let clickedButton = null; 
-let operation = ""; 
-let result = 0; 
-const operators = ["+", "-", "x", "÷"]
+class Calculator {
+    constructor() {
+        this.operand1 = null;
+        this.operand2 = null;
+        this.operator = null;
+        this.operation = "";
+        this.result = 0;
+        this.operationDisplay = document.querySelector(".operation");
+        this.resultDisplay = document.querySelector(".result");
+        this.operators = ["+", "-", "x", "÷"];
+        this.click = false;
+        this.clickedButton = null;
 
-const operationDisplay = document.querySelector(".operation");
-const resultDisplay = document.querySelector(".result");
+        const buttons = document.querySelectorAll(".button-wrapper");
+        buttons.forEach(button => {
+            button.addEventListener("mousedown", () => {
+                this.click = true;
+                this.clickedButton = button;
+                this.clickedButton.classList.add("button-clicked");
+                this.updateDisplay();
+            });
+        });
 
-function add(num1, num2) {
-    result = num1 + num2;
-    result = Math.round(result * 1000) / 1000;
-    return result;
-}
+        document.body.addEventListener("mouseup", () => {
+            if (this.click) {
+                this.clickedButton.classList.remove("button-clicked");
+                this.click = false;
+            }
+        });
 
-function subtract(num1, num2) {
-    result = num1 - num2;
-    result = Math.round(result * 1000) / 1000;
-    return result;
-}
-
-function multiply(num1, num2) {
-    result = num1 * num2;
-    result = Math.round(result * 1000) / 1000;
-    return result;
-}
-
-function divide(num1, num2) {
-    if (num2 === 0) {
-        openPopUp();
-        return result;
-    } 
-    result = num1 / num2;
-    result = Math.round(result * 1000) / 1000;
-    return result;
-}
-
-function operate(num1, num2, operator) {
-    switch (operator) {
-        case "+":
-            return add(num1, num2);
-        case "-":
-            return subtract(num1, num2);
-        case "x":
-            return multiply(num1, num2);
-        case "÷":
-            return divide(num1, num2);
+        const popupButton = document.querySelector(".popup > button");
+        popupButton.addEventListener("click", () => {
+            this.reset();
+            this.closePopup();
+        });
     }
-}
 
-function nextOperation() {
-    for (let symbol of operators) {
-        if (operation.includes(symbol) && !isNaN(operation.slice(-1))) {
-            return true;
+    add(operand1, operand2) {
+        return operand1 + operand2;
+    }
+
+    subtract(operand1, operand2) {
+        return operand1 - operand2;
+    }
+
+    multiply(operand1, operand2) {
+        return operand1 * operand2;
+    }
+
+    divide(operand1, operand2) {
+        if (operand2 === 0) {
+            this.openPopUp();
+            return null;
         }
-    }
-    return false;
-}
-
-function canAddDecimal() {
-    let tempOperator = null;
-    let tempNum1 = null;
-    let tempNum2 = null;
-    if (isNaN(operation.slice(-1))) {
-        return false;
+        return operand1 / operand2;
     }
 
-    for (let symbol of operators) {
-        if (operation.includes(symbol)) {
-            tempOperator = symbol;
+    operate() {
+        switch (this.operator) {
+            case "+":
+                return this.add(this.operand1, this.operand2);
+            case "-":
+                return this.subtract(this.operand1, this.operand2);
+            case "x":
+                return this.multiply(this.operand1, this.operand2);
+            case "÷":
+                return this.divide(this.operand1, this.operand2);
         }
-    }
-    if (tempOperator === null) {
-        tempNum1 = operation;
-        if (!tempNum1.includes(".")) {
-            return true;
-        }
-    } else { 
-        tempNum2 = operation.split(tempOperator)[1];
-        if (!tempNum2.includes(".")) {
-            return true;
-        }
+        return null;
     }
 
-    return false;
-}
+    nextOperation() {
+        return this.operators.some(symbol => this.operation.includes(symbol) && !isNaN(this.operation.slice(-1)));
+    }
 
-function reset() {
-    num1 = null;
-    num2 = null;
-    operator = null;
-    operation = "";
-    result = 0;
-    operationDisplay.textContent = operation;
-    resultDisplay.textContent = result.toString();
-}
+    canAddDecimal() {
+        if (isNaN(this.operation.slice(-1))) {
+            return false;
+        }
 
-function backspace() {
-    if (operation !== "") {
-        if (operation.startsWith("-") && operation.length == 2) {
-            operation = "";
+        const tempOperator = this.operators.find(symbol => this.operation.includes(symbol));
+        if (tempOperator === undefined) {
+            return !this.operation.includes(".");
         } else {
-            operation = operation.substring(0, operation.length - 1);
-        }
-    }
-    operationDisplay.textContent = formatOperation(operation);
-}
-
-function hasOperator() {
-    for (let symbol of operators) {
-        if (operation.substring(1, operation.length).includes(symbol)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function formatOperation() {
-    let result = "";
-    const symbols = ["+", "-", "x", "÷", "="];
-    for (let i = 0; i < operation.length; i++) {
-        if (symbols.includes(operation.charAt(i))) {
-            result += ` ${operation.charAt(i)} `;
-        } else {
-            result += operation.charAt(i);
-        }
-    }
-    result = result.trim();
-    return result;
-}
-
-function openPopUp() {
-    // Open popup
-    const popup = document.querySelector(".popup");
-    popup.classList.add("open-popup");
-    // Add overlay to prevent user from clicking
-    const overlay = document.querySelector(".overlay");
-    overlay.classList.add("overlay-active");
-}
-
-function closePopup() {
-   
-    const popup = document.querySelector(".popup");
-    popup.classList.remove("open-popup");
-   
-    const overlay = document.querySelector(".overlay");
-    overlay.classList.remove("overlay-active");
-}
-
-function updateDisplay() {
-   
-    if (!isNaN(clickedButton.id)) {
-        if (operation.length < 10) {
-            if (operation.endsWith("=")) {
-                num1 = null;
-                num2 = null;
-                operator = null;
-                operation = "";
-            }
-            operation += clickedButton.id;
-            operationDisplay.textContent = formatOperation(operation);
+            const tempNum2 = this.operation.split(tempOperator)[1];
+            return !tempNum2.includes(".");
         }
     }
 
-   
-    if (clickedButton.id === ".") {
-        if (operation.length < 10) {
-            if (canAddDecimal()) {
-                operation += clickedButton.id;
-                operationDisplay.textContent = formatOperation(operation);
-            }
-        }
+    reset() {
+        this.operand1 = null;
+        this.operand2 = null;
+        this.operator = null;
+        this.operation = "";
+        this.result = 0;
+        this.operationDisplay.textContent = this.operation;
+        this.resultDisplay.textContent = this.result.toString();
     }
 
-   
-    if (operators.includes(clickedButton.id)) {
-        if (operation.length < 10) {
-            if (nextOperation()) {
-                num2 = parseFloat(operation.split(operator)[1]);
-                result = operate(num1, num2, operator);
-                resultDisplay.textContent = result.toString();
-                operation = result.toString();
-            }
-
-            if (operation === "") {
-                num1 = 0;
-                operator = clickedButton.id;
-                operation = num1.toString() + operator;
-                operationDisplay.textContent = formatOperation(operation);
-            }
-            if (!isNaN(operation.slice(-1))) {
-                num1 = parseFloat(operation);
-                operator = clickedButton.id;
-                operation += clickedButton.id;
-                operationDisplay.textContent = formatOperation(operation);
-            }
-
-            if (operation.endsWith("=")) {
-                num1 = result;
-                operator = clickedButton.id;
-                operation = num1.toString() + operator;
-                operationDisplay.textContent = formatOperation(operation);
-            }
-        }
-    }
-
-   
-    if (clickedButton.id === "=") {
-
-        if (!isNaN(operation.slice(-1))) {
-            if (!hasOperator()) {
-                result = parseFloat(operation);
-                operation += "=";
-                operationDisplay.textContent = formatOperation(operation);
-                resultDisplay.textContent = result.toString();
+    backspace() {
+        if (this.operation !== "") {
+            if (this.operation.startsWith("-") && this.operation.length === 2) {
+                this.operation = "";
             } else {
-                num2 = parseFloat(operation.split(operator)[1]);
-                result = operate(num1, num2, operator);
-                operation += "=";
-                operationDisplay.textContent = formatOperation(operation);
-                resultDisplay.textContent = result.toString();
+                this.operation = this.operation.substring(0, this.operation.length - 1);
             }
         }
-        if (operators.includes(operation.slice(-1))) {
-            result = num1;
-            operation = operation.substring(0, operation.length - 1) + "=";
-            operationDisplay.textContent = formatOperation(operation);
-            resultDisplay.textContent = result.toString();
+        this.operationDisplay.textContent = this.formatOperation();
+    }
+
+    hasOperator() {
+        return this.operators.some(symbol => this.operation.substring(1, this.operation.length).includes(symbol));
+    }
+
+    formatOperation() {
+        return this.operation.replace(/(\+|-|x|÷|=)/g, ' $1 ').trim();
+    }
+
+    openPopUp() {
+        const popup = document.querySelector(".popup");
+        popup.classList.add("open-popup");
+        const overlay = document.querySelector(".overlay");
+        overlay.classList.add("overlay-active");
+    }
+
+    closePopup() {
+        const popup = document.querySelector(".popup");
+        popup.classList.remove("open-popup");
+        const overlay = document.querySelector(".overlay");
+        overlay.classList.remove("overlay-active");
+    }
+
+    updateDisplay() {
+        if (!isNaN(this.clickedButton.id)) {
+            if (this.operation.length < 10) {
+                if (this.operation.endsWith("=")) {
+                    this.operand1 = null;
+                    this.operand2 = null;
+                    this.operator = null;
+                    this.operation = "";
+                }
+                this.operation += this.clickedButton.id;
+                this.operationDisplay.textContent = this.formatOperation();
+            }
+        }
+
+        if (this.clickedButton.id === ".") {
+            if (this.operation.length < 10) {
+                if (this.canAddDecimal()) {
+                    this.operation += this.clickedButton.id;
+                    this.operationDisplay.textContent = this.formatOperation();
+                }
+            }
+        }
+
+        if (this.operators.includes(this.clickedButton.id)) {
+            if (this.operation.length < 10) {
+                if (this.nextOperation()) {
+                    this.operand2 = parseFloat(this.operation.split(this.operator)[1]);
+                    this.result = this.operate();
+                    this.resultDisplay.textContent = this.result.toString();
+                    this.operation = this.result.toString();
+                }
+
+                if (this.operation === "") {
+                    this.operand1 = 0;
+                    this.operator = this.clickedButton.id;
+                    this.operation = this.operand1.toString() + this.operator;
+                    this.operationDisplay.textContent = this.formatOperation();
+                }
+
+                if (!isNaN(this.operation.slice(-1))) {
+                    this.operand1 = parseFloat(this.operation);
+                    this.operator = this.clickedButton.id;
+                    this.operation += this.clickedButton.id;
+                    this.operationDisplay.textContent = this.formatOperation();
+                }
+
+                if (this.operation.endsWith("=")) {
+                    this.operand1 = this.result;
+                    this.operator = this.clickedButton.id;
+                    this.operation = this.operand1.toString() + this.operator;
+                    this.operationDisplay.textContent = this.formatOperation();
+                }
+            }
+        }
+
+        if (this.clickedButton.id === "=") {
+            if (!isNaN(this.operation.slice(-1))) {
+                if (!this.hasOperator()) {
+                    this.result = parseFloat(this.operation);
+                    this.operation += "=";
+                    this.operationDisplay.textContent = this.formatOperation();
+                    this.resultDisplay.textContent = this.result.toString();
+                } else {
+                    this.operand2 = parseFloat(this.operation.split(this.operator)[1]);
+                    this.result = this.operate();
+                    this.operation += "=";
+                    this.operationDisplay.textContent = this.formatOperation();
+                    this.resultDisplay.textContent = this.result.toString();
+                }
+            }
+            if (this.operators.includes(this.operation.slice(-1))) {
+                this.result = this.operand1;
+                this.operation = this.operation.substring(0, this.operation.length - 1) + "=";
+                this.operationDisplay.textContent = this.formatOperation();
+                this.resultDisplay.textContent = this.result.toString();
+            }
+        }
+
+        if (this.clickedButton.id === "clear") {
+            this.reset();
+        }
+
+        if (this.clickedButton.id === "delete") {
+            this.backspace();
         }
     }
-
-    if (clickedButton.id === "clear") {
-        reset();
-    }
-
-    if (clickedButton.id === "delete") {
-        backspace();
-    }
 }
-const buttons = document.querySelectorAll(".button-wrapper");
-buttons.forEach(button => {
-    button.addEventListener("mousedown", () => {
-        click = true;
-        clickedButton = button;
-        clickedButton.classList.add("button-clicked");
-    });
-});
 
-document.body.addEventListener("mouseup", () => {
-    if (click) {
-        clickedButton.classList.remove("button-clicked");
-        updateDisplay();
-    }
-    click = false;
-});
-
-const popupButton = document.querySelector(".popup > button");
-popupButton.addEventListener("click", () => {
-    reset();
-    closePopup();
-})
+const calculator = new Calculator();
