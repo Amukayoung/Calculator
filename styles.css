@@ -5,24 +5,27 @@ body{
 .content {
     display: flex;
     justify-content: center;
+    margin-top: 50px;
+    
 }
 
 .calculator {
     width: 350px;
-    background-color: #aaa;
+    background-color: black;
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     border-radius: 15px;
     border-style: solid;
+    box-shadow: 5px 10px 18px black;
 }
 .display {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-end; 
-    background-color: #eee;
+    background-color: #a9bfa3;
     height: 90px;
     padding: 16px;
     border-radius: 10px;
@@ -58,6 +61,7 @@ body{
     border-radius: 10px;
     border-style: solid;
     background-color: #eeeeee;
+    box-shadow: 3px 5px 8px #eeeeee;
 } 
 
 .button-wrapper:hover {
@@ -72,27 +76,32 @@ button {
     font-size: 20px;
 } 
 #clear {
-    background-color: #FFAAAA;
+    background-color: #22328e;
+    box-shadow: 3px 5px 8px #22328e;
+    
 }
 
 #clear:hover {
-    background-color: rgba(255, 170, 170, 0.7);
+    background-color: blue;
 }
 
 #delete {
-    background-color: #AAAAFF;
+    background-color: #b20830;
+    box-shadow: 3px 5px 8px #b20830;
 }
 
 #delete:hover {
-    background-color: rgba(170, 170, 255, 0.7);
+    background-color: red;
 }
 
 .operation-button {
-    background-color: rgb(241, 161, 13);
+    background-color: green;
+    box-shadow: 3px 5px 8px green;
 }
 
 .operation-button:hover {
     background-color: rgba(241, 161, 13, 0.7);
+    box-shadow: 3px 5px 8px rgba(241, 161, 13, 0.7);
 }
 
 .button-clicked {
@@ -104,7 +113,7 @@ button {
     top: 0;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.1);
-    background-color: #aaa;
+    background-color: azure;
     width: 400px;
     display: flex;
     flex-direction: column;
@@ -134,10 +143,8 @@ button {
     width: 150px;
     font-size: 16px;
     padding: 8px;
-    background-color: #FFAAAA;
+    background-color: #22328e;
     border-radius: 10px;
-    /* Remove inconsistent bordering */
-    border: 1px solid black;
 }
 
 .popup > button:hover {
@@ -153,9 +160,12 @@ button {
     width: 100%;
     height: 100%;
     background-color: black;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 .overlay-active {
     display: block;
   }
+
+  
+
