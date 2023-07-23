@@ -2,7 +2,7 @@
 
 ## Links
 
-- [Live hosted demo on GitHub pages!](https://amukayoung.github.io/Calcultor/)
+- [Live hosted demo on GitHub pages!](https://amukayoung.github.io/Calculator/)
 
 - [Link to the Assignment](https://www.theodinproject.com/lessons/foundations-calculator)
 
