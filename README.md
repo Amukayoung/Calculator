@@ -6,7 +6,7 @@
 
 - [Link to the Assignment](https://www.theodinproject.com/lessons/foundations-calculator)
 
-## Screenshots
+## Screenshot
 
 ![](./images/calScreenshot.png)
 
